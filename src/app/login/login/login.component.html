@@ -1,0 +1,48 @@
+<div>
+    <form [formGroup]="loginForm">
+        <div class="row">
+            <div class="col-md-12 roundedTextBox mb-3">
+                <label>Username</label>
+                <input type="text" class="form-control mb-2" id="username" formControlName="username"
+                    placeholder="Enter Username" required>
+                <div *ngIf="submitted && loginForm.controls['username'].errors?.['required']" class="text-danger">
+                    Username is required.
+                </div>
+            </div>
+            <div class="col-md-12 roundedTextBox mb-3">
+                <label>Password</label>
+                <input type="password" class="form-control mb-2" id="inputPassword" formControlName="password"
+                    placeholder="Enter Password">
+                <div *ngIf="submitted && loginForm.controls['password'].errors?.['required']" class="text-danger">
+                    Password is required.
+                </div>
+                <div class="text-red-400 text-sm" *ngIf="submitted && passwordFormField?.dirty">
+                    <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('^(?=.*[A-Z])')}">At
+                        least oneu ppercase
+                        letter.</span>
+                    <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[a-z])')}">At
+                        least one lowercase
+                        letter.</span>
+                    <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(.*[0-9].*)')}">At
+                        least one
+                        digit.</span>
+                    <span class="block"
+                        [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[!@#$%^&*])')}">At least one
+                        special
+                        character.</span>
+                    <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('.{8,}')}">At least
+                        8 characters
+                        long.</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="buttons text-center">
+            <button class="btn-customBlue mr-2" type="submit" (click)="onLogin()">Login</button>
+        </div>
+        <div class="buttons text-center">
+            <button class="btn-customBlue mr-2" type="submit" (click)="logOut()">Logout</button>
+        </div>
+
+    </form>
+</div>

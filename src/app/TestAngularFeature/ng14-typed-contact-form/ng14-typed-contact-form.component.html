@@ -1,0 +1,19 @@
+<p>ng14-typed-contact-form works!</p>
+<form (ngSubmit)="onSubmitContactForm()" [formGroup]="contactForm">
+    <label for="name">Name: </label>
+    <input id="name" type="text" formControlName="name">
+    <br />
+    <label for="email">Email: </label>
+    <input id="email" type="text" formControlName="email">
+    <br />
+    <label for="contactNumber">Contact Number: </label>
+    <input id="contactNumber" type="text" formControlName="contactNumber">
+    <br />
+    <label for="query">Query: </label>
+    <textarea id="query" type="text" formControlName="query"></textarea>
+    <br />
+    <button type="submit">Submit</button>
+    <button (click)="resetSubmitContactForm()" type="reset">Reset</button>
+</form>
+<button (click)="removeQuery()">Remove Query</button>
+<p [innerHTML]="dataOutput"></p>
