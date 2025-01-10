@@ -1,0 +1,12 @@
+<p>student-upload works!</p>
+<form (ngSubmit)="uploadFiles(filesElement)">
+    <div>
+        <input type="file" (change)="onFileChange($event)" #filesElement accept=".xlsx, .xls">
+    </div>
+
+    <div *ngIf="excelData">
+        <h3>Uploaded Data:</h3>
+        <pre>{{ excelData | json }}</pre>
+    </div>
+    <input type="submit" name="Submit">
+</form>

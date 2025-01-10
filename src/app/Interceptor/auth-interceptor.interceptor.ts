@@ -3,21 +3,33 @@ import { Observable, tap } from 'rxjs';
 
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
+  //console.log(token + "=====");
   if (token == null) {
     req = req.clone({
       setHeaders: {
         'Content-Type': 'application/json'
       }
     });
-    console.log(req);
+    //console.log(req);
   }
   if (token != null) {
-    req = req.clone({
-      setHeaders: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    });
+    if (req.url.indexOf("UploadStudentData") > 0) {
+      req = req.clone({
+        setHeaders: {
+          'enctype': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+    else {
+      req = req.clone({
+        setHeaders: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+
     console.log(req);
   }
   return next(req).pipe(tap(() => { },
