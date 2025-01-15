@@ -13,7 +13,7 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
     //console.log(req);
   }
   if (token != null) {
-    if (req.url.indexOf("UploadStudentData") > 0) {
+    if (req.url.indexOf("UploadStudent") > 0) {
       req = req.clone({
         setHeaders: {
           'enctype': 'multipart/form-data',

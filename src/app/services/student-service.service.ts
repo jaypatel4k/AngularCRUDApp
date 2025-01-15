@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class StudentServiceService {
   constructor(private http: HttpClient) { }
 
 
-  UploadStudentData(formdata: FormData): Observable<any> {
+  UploadStudent(formdata: FormData, params: HttpParams): Observable<any> {
     let headers = new HttpHeaders();
 
     // headers.append('Content-Type', 'multipart/form-data');
@@ -22,7 +22,7 @@ export class StudentServiceService {
 
     const httpOptions = { headers: headers };
 
-    return this.http.post(this.apiUrl + 'student/UploadStudentData', formdata)
+    return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata, { params })
 
   }
 }

@@ -1,7 +1,27 @@
 <p>student-upload works!</p>
 <form (ngSubmit)="uploadFiles(filesElement)">
-    <div>
-        <input type="file" (change)="onFileChange($event)" #filesElement accept=".xlsx, .xls">
+    <div style="width: 100%">
+        <mat-form-field>
+            <mat-label>Division</mat-label>
+            <mat-select [(ngModel)]="selectedDivision" name="division" (selectionChange)="changeDivision($event)">
+                @for (division of divisions; track division) {
+                <mat-option [value]="division.value">{{division.viewValue}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Standard</mat-label>
+            <mat-select [(ngModel)]="selectedStandard" name="standard" (selectionChange)="changeStandard($event)">
+                @for (standard of standards; track standard) {
+                <mat-option [value]="standard.value">{{standard.viewValue}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div style="width: 50%">
+        <label for="formFileDisabled" class="form-label">Upload Student Data</label>
+        <input class="form-control" #fileinput type="file" id="formFileDisabled" (change)="onFileChange($event)"
+            #filesElement accept=".xlsx, .xls" />
     </div>
 
     <div *ngIf="excelData">
