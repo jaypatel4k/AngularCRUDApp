@@ -1,0 +1,77 @@
+<app-student-navigation></app-student-navigation>
+<mat-label>Upload student data</mat-label>
+<p><mat-label style="color: green;">{{message}}</mat-label></p>
+<label class="form-label" style="color: red;">{{errormessage}}</label>
+<form (ngSubmit)="uploadFiles(filesElement)">
+    <div style="width: 100%">
+
+        <mat-form-field style="padding-right: 2px;width:135px">
+            <mat-label>Test Type</mat-label>
+            <mat-select [(ngModel)]="selectedTestType" name="testtype" (selectionChange)="changeTestType($event)">
+                @for (testtype of testtypes; track testtype) {
+                <mat-option [value]="testtype.id">{{testtype.testTypeName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:115px">
+            <mat-label>Division</mat-label>
+            <mat-select [(ngModel)]="selectedDivision" name="division" (selectionChange)="changeDivision($event)">
+                @for (division of divisions; track division) {
+                <mat-option [value]="division.id">{{division.divisionName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="padding-right: 2px;width:125px">
+            <mat-label>Standard</mat-label>
+            <mat-select [(ngModel)]="selectedStandard" name="standard" (selectionChange)="changeStandard($event)">
+                @for (standard of standards; track standard) {
+                <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:115px">
+            <mat-label>Year</mat-label>
+            <mat-select [(ngModel)]="selectedYear" name="year" (selectionChange)="changeYear($event)">
+                @for (year of years; track year) {
+                <mat-option [value]="year.id">{{year.year}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:115px">
+            <mat-label>Month</mat-label>
+            <mat-select [(ngModel)]="selectedMonth" name="month" (selectionChange)="changeMonth($event)">
+                @for (month of months; track month) {
+                <mat-option [value]="month.id">{{month.monthName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:115px">
+            <mat-label>TestHeldOfMark</mat-label>
+            <mat-select [(ngModel)]="selectedTestHeldOfMark" name="testheldofmark"
+                (selectionChange)="changeTestHeldOfMark($event)">
+                @for (testheldofmark of testheldofmarks; track testheldofmark) {
+                <mat-option [value]="testheldofmark.id">{{testheldofmark.outOfMark}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:155px">
+            <mat-label>Stream Type</mat-label>
+            <mat-select [(ngModel)]="selectedStreamType" name="streamtype" (selectionChange)="changeStreamType($event)">
+                @for (streamtype of streamtypes; track streamtype) {
+                <mat-option [value]="streamtype.id">{{streamtype.streamName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div style="width: 35%;padding-bottom: 10px;">
+        <input class="form-control" #fileinput type="file" id="formFileDisabled" (change)="onFileChange($event)"
+            #filesElement accept=".xlsx, .xls" />
+    </div>
+
+    <div *ngIf="excelData">
+        <h3>Uploaded Data:</h3>
+        <pre>{{ excelData | json }}</pre>
+    </div>
+    <input type="submit" name="Submit">
+</form>

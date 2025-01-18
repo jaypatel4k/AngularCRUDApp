@@ -25,4 +25,37 @@ export class StudentServiceService {
     return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata, { params })
 
   }
+  UploadStudentMarks(formdata: FormData, params: HttpParams): Observable<any> {
+    let headers = new HttpHeaders();
+
+    const httpOptions = { headers: headers };
+
+    return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata, { params })
+
+  }
+  getStudentListByStandardAndDivision(params: HttpParams): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetStudentListByDivAndStandard', { params });
+  }
+  getDivisionList(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetDivisionList');
+  }
+  getStandardList(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetStandardList');
+  }
+  getTestTypeList(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetTestTypeList');
+  }
+  getMonth(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetMonth');
+  }
+  getYear(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetYear');
+  }
+  getAllTestHeldOfMark(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetAllTestHeldOfMark');
+  }
+  getStreamTypes(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetStreamTypeList');
+  }
+
 }

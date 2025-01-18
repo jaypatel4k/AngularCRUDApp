@@ -7,3 +7,12 @@ input.mat-input-element {
     font-size: 12px;
     color: red;
 }
+
+.example-button-row {
+    display: table-cell;
+    max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+}

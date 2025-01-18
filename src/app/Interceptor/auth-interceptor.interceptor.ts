@@ -1,9 +1,16 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { HttpErrorResponse, HttpEvent, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { inject, Inject } from '@angular/core';
+import { finalize, Observable, tap } from 'rxjs';
+import { LoadspinnerService } from '../services/loadspinner.service';
 
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
-  //console.log(token + "=====");
+  const service = inject(LoadspinnerService);
+  //service.hide();
+
+  if (req.url.length > 0) {
+    service.show();
+  }
   if (token == null) {
     req = req.clone({
       setHeaders: {
@@ -32,13 +39,17 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
 
     console.log(req);
   }
-  return next(req).pipe(tap(() => { },
-    (err: any) => {
-      if (err instanceof HttpErrorResponse) {
-        if (err.status !== 401) {
-          return;
-        }
-        //this.router.navigate(['login']);
+  return next(req).pipe(tap({
+    next: (event: HttpEvent<any>) => {
+      if (event instanceof HttpResponse) {
+        service.hide();
       }
-    }));
+    },
+    error: (error) => {
+      service.hide();
+    }
+  })
+
+
+  );
 };
