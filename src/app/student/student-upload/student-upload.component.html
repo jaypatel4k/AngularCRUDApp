@@ -4,32 +4,38 @@
 <label class="form-label" style="color: red;">{{errormessage}}</label>
 <form (ngSubmit)="uploadFiles(filesElement)">
     <div style="width: 100%">
-        <mat-form-field style="padding-right: 2px;width:115px">
-            <mat-label>Division</mat-label>
-            <mat-select [(ngModel)]="selectedDivision" name="division" (selectionChange)="changeDivision($event)">
-                @for (division of divisions; track division) {
-                <mat-option [value]="division.id">{{division.divisionName}}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
+        <div style="float:left;">
+            <div style="float: left;padding-right: 2px;">
+                <mat-form-field>
+                    <mat-label>Division</mat-label>
+                    <mat-select [(ngModel)]="selectedDivision" name="division"
+                        (selectionChange)="changeDivision($event)">
+                        @for (division of divisions; track division) {
+                        <mat-option [value]="division.id">{{division.divisionName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div style="float: right;padding-right: 2px;">
+                <mat-form-field>
+                    <mat-label>Standard</mat-label>
+                    <mat-select [(ngModel)]="selectedStandard" name="standard"
+                        (selectionChange)="changeStandard($event)">
+                        @for (standard of standards; track standard) {
+                        <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
 
-        <mat-form-field style="padding-right: 2px;width:125px">
-            <mat-label>Standard</mat-label>
-            <mat-select [(ngModel)]="selectedStandard" name="standard" (selectionChange)="changeStandard($event)">
-                @for (standard of standards; track standard) {
-                <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div style="width: 35%;padding-bottom: 10px;">
-        <input class="form-control" #fileinput type="file" id="formFileDisabled" (change)="onFileChange($event)"
-            #filesElement accept=".xlsx, .xls" />
+        </div>
+
+
+        <div style="width: 35%;padding-bottom: 10px;">
+            <input class="form-control" #fileinput type="file" id="formFileDisabled" (change)="onFileChange($event)"
+                #filesElement accept=".xlsx, .xls" />
+        </div>
+        <button mat-flat-button type="submit" name="Submit">Upload Data</button>
     </div>
 
-    <div *ngIf="excelData">
-        <h3>Uploaded Data:</h3>
-        <pre>{{ excelData | json }}</pre>
-    </div>
-    <input type="submit" name="Submit">
 </form>

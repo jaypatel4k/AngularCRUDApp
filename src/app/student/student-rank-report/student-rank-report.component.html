@@ -2,7 +2,7 @@
 <mat-label>Upload Student Marks</mat-label>
 <p><mat-label style="color: green;">{{message}}</mat-label></p>
 <label class="form-label" style="color: red;">{{errormessage}}</label>
-<form (ngSubmit)="uploadFiles(filesElement)">
+<form>
     <div style="width: 100%">
 
         <mat-form-field style="padding-right: 2px;width:135px">
@@ -59,16 +59,18 @@
             <mat-label>Stream Type</mat-label>
             <mat-select [(ngModel)]="selectedStreamType" name="streamtype" (selectionChange)="changeStreamType($event)">
                 @for (streamtype of streamtypes; track streamtype) {
-                <mat-option [value]="streamtype.id">{{streamtype.streamName}}</mat-option>
+                <mat-option [value]="streamtype.id" [id]="streamtype.streamName">{{streamtype.streamName}}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
     </div>
-    <div style="width: 35%;padding-bottom: 10px;">
-        <input class="form-control" #fileinput type="file" id="formFileDisabled" (change)="onFileChange($event)"
-            #filesElement accept=".xlsx, .xls" />
+    <div class="example-button-row" style="float:left;">
+        <button (click)="fetchData()" mat-flat-button>View Rank Report</button>
+        <button (click)="onBtExport()" mat-flat-button>Export Data</button>
     </div>
-
-    <!-- <input type="submit" name="Submit"> -->
-    <button mat-flat-button type="submit" name="Submit">Upload Student Marks</button>
+    <div style="clear:both;"></div>
+    <div *ngIf="StudentTopThreeRankList">
+        <ag-grid-angular [rowData]="StudentTopThreeRankList" [columnDefs]="colDefs" style="height: 600px;width:auto;"
+            (gridReady)="onGridReady($event)" />
+    </div>
 </form>

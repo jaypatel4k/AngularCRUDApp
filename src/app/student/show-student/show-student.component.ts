@@ -53,7 +53,7 @@ export class ShowStudentComponent {
 
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
-    { field: "name" },
+    { field: "name", resizable: false },
     { field: "rollNo" }
   ];
 
@@ -70,11 +70,11 @@ export class ShowStudentComponent {
 
   GetStudentList() {
     if (this.selectedDivisionId == "") {
-      alert('Please select division');
+      this.setErrorMessage('Please select division');
       return;
     }
     if (this.selectedStandardId == "") {
-      alert('Please select standard');
+      this.setErrorMessage('Please select standard');
       return;
     }
 
@@ -83,9 +83,11 @@ export class ShowStudentComponent {
       this.StudentList = data;
     })
   }
-
+  setErrorMessage(strmessage: string) {
+    this.errormessage = strmessage;
+  }
   onGridReady(params: GridReadyEvent) {
-
+    params.api.sizeColumnsToFit();
   }
 
 }

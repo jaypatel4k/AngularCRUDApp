@@ -10,11 +10,13 @@ import { HttpParams } from '@angular/common/http';
 import { StudentNavigationComponent } from '../student-navigation/student-navigation.component';
 import { Division } from '../../interface/studentInterface';
 import { Standard } from '../../interface/studentInterface';
+import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-student-upload',
   standalone: true,
-  imports: [JsonPipe, NgIf, FormsModule, CommonModule, MatLabel, MatSelect, MatOption, MatFormField, MatLabel, StudentNavigationComponent],
+  imports: [FormsModule, CommonModule, MatLabel, MatSelect, MatOption, MatFormField, MatLabel, MatButton, StudentNavigationComponent],
   templateUrl: './student-upload.component.html',
   styleUrl: './student-upload.component.scss'
 })
@@ -65,23 +67,25 @@ export class StudentUploadComponent {
 
   changeDivision(event: any) {
     this.selectedDivisionId = event.value;
+    this.errormessage = '';
   }
   changeStandard(event: any) {
     this.selectedStandardId = event.value;
+    this.errormessage = '';
   }
   uploadFiles(filesElement: HTMLInputElement) {
 
     if (this.file) {
       if (this.selectedDivisionId == "") {
-        alert('Please select division');
+        this.setErrorMessage('Please select division!');
         return;
       }
       if (this.selectedStandardId == "") {
-        alert('Please select standard');
+        this.setErrorMessage('Please select standard!');
         return;
       }
       if (this.upoadinput.nativeElement.value == "") {
-        alert('Please select file to upload');
+        this.setErrorMessage('Please select file to upload!');
         return;
       }
       let formData = new FormData();
@@ -98,10 +102,13 @@ export class StudentUploadComponent {
         // alert(result.success);
       })
     } else {
-      this.errormessage = "Please select files to upload!"
+      this.setErrorMessage('Please select files to upload');
     }
   }
 
+  setErrorMessage(strmessage: string) {
+    this.errormessage = strmessage;
+  }
 
 }
 

@@ -7,11 +7,12 @@ import { StudentNavigationComponent } from '../student-navigation/student-naviga
 import { HttpParams } from '@angular/common/http';
 import { Division, Month, Standard, StreamType, TestHeldOfMark, TestType, Year } from '../../interface/studentInterface';
 import { StudentServiceService } from '../../services/student-service.service';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-student-mark-uplad',
   standalone: true,
-  imports: [JsonPipe, NgIf, FormsModule, CommonModule, MatLabel, MatSelect, MatOption, MatFormField, MatLabel, StudentNavigationComponent],
+  imports: [FormsModule, CommonModule, MatLabel, MatSelect, MatOption, MatFormField, MatButton, StudentNavigationComponent],
   templateUrl: './student-mark-uplad.component.html',
   styleUrl: './student-mark-uplad.component.scss'
 })
@@ -135,33 +136,37 @@ export class StudentMarkUpladComponent {
   uploadFiles(filesElement: HTMLInputElement) {
 
     if (this.file) {
-      if (this.selectedDivisionId == "") {
-        alert('Please select division');
-        return;
-      }
-
       if (this.selectedTestTypeId == "") {
-        alert('Please select TestType');
+        this.setErrorMessage('Please select TestType');
         return;
       }
-      if (this.selectedMonthId == "") {
-        alert('Please select Month');
+      if (this.selectedDivisionId == "") {
+        this.setErrorMessage('Please select division');
+        return;
+      }
+      if (this.selectedStandardId == "") {
+        this.setErrorMessage('Please select Standard');
         return;
       }
       if (this.selectedYearId == "") {
-        alert('Please select Year');
+        this.setErrorMessage('Please select Year');
         return;
       }
+      if (this.selectedMonthId == "") {
+        this.setErrorMessage('Please select Month');
+        return;
+      }
+
       if (this.selectedTestHeldOfMarkId == "") {
-        alert('Please select Test Held Of Mark');
+        this.setErrorMessage('Please select Test Held Of Mark');
         return;
       }
       if (this.selectedStreamTypeId == "") {
-        alert('Please select StreamType');
+        this.setErrorMessage('Please select StreamType');
         return;
       }
       if (this.upoadinput.nativeElement.value == "") {
-        alert('Please select file to upload');
+        this.setErrorMessage('Please select file to upload');
         return;
       }
       let formData = new FormData();
@@ -195,10 +200,12 @@ export class StudentMarkUpladComponent {
 
       })
     } else {
-      this.errormessage = "Please select files to upload!"
+      this.setErrorMessage('Please select file to upload');
     }
   }
-
+  setErrorMessage(strmessage: string) {
+    this.errormessage = strmessage;
+  }
 
 }
 

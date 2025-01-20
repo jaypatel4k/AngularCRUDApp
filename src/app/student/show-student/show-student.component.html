@@ -2,30 +2,35 @@
 <p><mat-label style="color: green;">{{message}}</mat-label></p>
 <label class="form-label" style="color: red;">{{errormessage}}</label>
 <form>
-    <div style="width: 30%">
-        <mat-form-field style="padding-right: 2px;width:115px">
-            <mat-label>Division</mat-label>
-            <mat-select [(ngModel)]="selectedDivision" name="division" (selectionChange)="changeDivision($event)">
-                @for (division of divisions; track division) {
-                <mat-option [value]="division.id">{{division.divisionName}}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field style="padding-right: 2px;width:125px">
-            <mat-label>Standard</mat-label>
-            <mat-select [(ngModel)]="selectedStandard" name="standard" (selectionChange)="changeStandard($event)">
-                @for (standard of standards; track standard) {
-                <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-        <div class="example-button-row">
-            <button (click)="GetStudentList()" mat-flat-button>Get Data</button>
+    <div style="float:left;">
+        <div style="float: left;padding-right: 2px;">
+            <mat-form-field>
+                <mat-label>Division</mat-label>
+                <mat-select [(ngModel)]="selectedDivision" name="division" (selectionChange)="changeDivision($event)">
+                    @for (division of divisions; track division) {
+                    <mat-option [value]="division.id">{{division.divisionName}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
         </div>
+        <div style="float: right;padding-right: 2px;">
+            <mat-form-field>
+                <mat-label>Standard</mat-label>
+                <mat-select [(ngModel)]="selectedStandard" name="standard" (selectionChange)="changeStandard($event)">
+                    @for (standard of standards; track standard) {
+                    <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
     </div>
-    <div style="width: 60%;float: right;">
-        <ag-grid-angular [rowData]="StudentList" [columnDefs]="colDefs" style="height: 600px;width:500px;"
+    <div class="example-button-row" style="float:left;">
+        <button (click)="GetStudentList()" mat-flat-button>Get Data</button>
+    </div>
+    <div style="clear:both;"></div>
+    <div>
+        <ag-grid-angular [rowData]="StudentList" [columnDefs]="colDefs" style="height: 600px;width:auto;"
             (gridReady)="onGridReady($event)" />
     </div>
 </form>

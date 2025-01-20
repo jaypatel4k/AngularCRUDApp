@@ -1,18 +1,21 @@
 <div>
     <form [formGroup]="loginForm">
-        <div class="row">
-            <div class="col-md-12 roundedTextBox mb-3">
-                <label>Username</label>
-                <input type="text" class="form-control mb-2" id="username" formControlName="username"
-                    placeholder="Enter Username" required>
+        <div class="row col-md-5" style="margin: auto;width: 50%;">
+            <div>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput id="username" formControlName="username">
+                </mat-form-field>
                 <div *ngIf="submitted && loginForm.controls['username'].errors?.['required']" class="text-danger">
                     Username is required.
                 </div>
             </div>
-            <div class="col-md-12 roundedTextBox mb-3">
-                <label>Password</label>
-                <input type="password" class="form-control mb-2" id="inputPassword" formControlName="password"
-                    placeholder="Enter Password">
+            <div style="clear: both;"></div>
+            <div>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput id="inputPassword" formControlName="password">
+                </mat-form-field>
                 <div *ngIf="submitted && loginForm.controls['password'].errors?.['required']" class="text-danger">
                     Password is required.
                 </div>
@@ -35,14 +38,15 @@
                         long.</span>
                 </div>
             </div>
+            <div style="clear: both;"></div>
+            <div style="margin: auto;width: 50%;">
+                <div class="buttons text-center" style="float: left;">
+                    <button mat-flat-button type="submit" (click)="onLogin()">Login</button>
+                </div>
+                <div class="buttons text-center">
+                    <button mat-flat-button type="submit" (click)="logOut()">Logout</button>
+                </div>
+            </div>
         </div>
-        <br>
-        <div class="buttons text-center">
-            <button class="btn-customBlue mr-2" type="submit" (click)="onLogin()">Login</button>
-        </div>
-        <div class="buttons text-center">
-            <button class="btn-customBlue mr-2" type="submit" (click)="logOut()">Logout</button>
-        </div>
-
     </form>
 </div>

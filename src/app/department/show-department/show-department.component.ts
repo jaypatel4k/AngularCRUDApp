@@ -3,12 +3,13 @@ import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddEditDepartmentComponent } from '../add-edit-department/add-edit-department.component';
 import { ApiserviceService } from '../../services/apiservice.service';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-show-department',
   standalone: true,
-  imports: [NgFor, NgIf, CommonModule, FormsModule, AddEditDepartmentComponent],
+  imports: [NgFor, NgIf, CommonModule, FormsModule, AddEditDepartmentComponent, MatButton],
   templateUrl: './show-department.component.html',
   styleUrl: './show-department.component.scss'
 })

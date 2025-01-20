@@ -57,5 +57,8 @@ export class StudentServiceService {
   getStreamTypes(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl + 'studentreport/GetStreamTypeList');
   }
+  getStdentTopThreeRankList(params: HttpParams): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopThreeRankInClass', { params });
+  }
 
 }
