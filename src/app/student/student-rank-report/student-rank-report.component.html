@@ -70,7 +70,11 @@
     </div>
     <div style="clear:both;"></div>
     <div *ngIf="StudentTopThreeRankList">
-        <ag-grid-angular [rowData]="StudentTopThreeRankList" [columnDefs]="colDefs" style="height: 600px;width:auto;"
+        <ag-grid-angular [rowData]="StudentTopThreeRankList" [columnDefs]="colDefs" style="height: 200px;width:auto;"
             (gridReady)="onGridReady($event)" />
+    </div>
+    <div *ngIf="StudentTopSubjectRankList">
+        <ag-grid-angular [rowData]="StudentTopSubjectRankList" [columnDefs]="colSubjectDefs"
+            style="height: 400px;width:auto;" (gridReady)="onGridReady($event)" />
     </div>
 </form>

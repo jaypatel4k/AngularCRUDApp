@@ -21,6 +21,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 })
 export class StudentRankReportComponent {
   StudentTopThreeRankList: any[] | undefined;
+  StudentTopSubjectRankList: any[] | undefined;
   private gridApi!: GridApi;
 
   strTestType: string | undefined;
@@ -75,8 +76,16 @@ export class StudentRankReportComponent {
   }
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
-    { field: "name", resizable: false },
     { field: "rollNo" },
+    { field: "name", resizable: false },
+    { field: "rank" },
+    { field: "totalMarks" }
+
+  ];
+  colSubjectDefs: ColDef[] = [
+    { field: "rollNo" },
+    { field: "name", resizable: false },
+    { field: "subjectName" },
     { field: "totalMarks" },
     { field: "rank" }
   ];
@@ -187,10 +196,18 @@ export class StudentRankReportComponent {
         '&testHeldOfMarkId=' + this.selectedTestHeldOfMarkId
     });
 
-    this.service.getStdentTopThreeRankList(params).subscribe(data => {
-      this.StudentTopThreeRankList = data;
-      this.exportexcel(data);
+    // this.service.getStdentTopThreeRankList(params).subscribe(data => {
+    //   this.StudentTopThreeRankList = data;
+    //   this.exportexcel(data);
+    // })
+
+    this.service.getStdentTopThreeRankAndSubjectRankList(params).subscribe(data => {
+      this.StudentTopThreeRankList = data[0];
+      this.StudentTopSubjectRankList = data[1];
+      this.exportexcel(data[0], data[1]);
     })
+
+
   }
   setErrorMessage(strmessage: string) {
     this.errormessage = strmessage;
@@ -207,12 +224,18 @@ export class StudentRankReportComponent {
   fileName = '';
   header1 = '';
   header2 = '';
+  header3 = '';
 
-  exportexcel(data: any): void {
+  exportexcel(data: any, data1: any): void {
     this.fileName = this.generateFileName();
     //console.log(this.fileName);
-    let Heading1 = [[this.header1, '', '']];
-    let Heading2 = [[this.header2, '', '']];
+    this.header3 = 'Highest Marks obtained in various Subjects';
+    let Heading1 = [['', this.header1, '']];
+    let Heading2 = [['', this.header2, '']];
+    let Heading3 = [['', this.header3, '']];
+
+    let topRank = [['ROLL NO.', 'NAME', 'RANK', 'TOTAL MARKS']];
+    let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'TOTAL MARKS', 'RANK']];
 
     /* pass here the table id */
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
@@ -221,8 +244,13 @@ export class StudentRankReportComponent {
 
     XLSX.utils.sheet_add_aoa(ws, Heading1);
     XLSX.utils.sheet_add_aoa(ws, Heading2, { origin: 'A2' });
+    XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'A3' });
     //Starting in the second row to avoid overriding and skipping headers
-    XLSX.utils.sheet_add_json(ws, data, { origin: 'A3', skipHeader: false });
+    XLSX.utils.sheet_add_json(ws, data, { origin: 'A4', skipHeader: true });
+
+    XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'A11' });
+    XLSX.utils.sheet_add_aoa(ws, topSubjectRank, { origin: 'A12' });
+    XLSX.utils.sheet_add_json(ws, data1, { origin: 'A13', skipHeader: true });
 
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */

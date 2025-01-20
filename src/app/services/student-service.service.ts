@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +59,11 @@ export class StudentServiceService {
   }
   getStdentTopThreeRankList(params: HttpParams): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopThreeRankInClass', { params });
+  }
+  getStdentTopThreeRankAndSubjectRankList(params: HttpParams): Observable<any[]> {
+    let response1 = this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopThreeRankInClass', { params });
+    let response2 = this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopRankBySubjectInClass', { params });
+    return forkJoin([response1, response2]);
   }
 
 }
