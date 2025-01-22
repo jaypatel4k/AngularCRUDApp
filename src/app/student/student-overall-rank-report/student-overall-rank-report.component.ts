@@ -15,13 +15,12 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 @Component({
-  selector: 'app-student-rank-report',
-  standalone: true,
+  selector: 'app-student-overall-rank-report',
   imports: [FormsModule, CommonModule, MatLabel, MatSelect, MatOption, MatFormField, MatButton, MatCheckbox, StudentNavigationComponent, AgGridAngular],
-  templateUrl: './student-rank-report.component.html',
-  styleUrl: './student-rank-report.component.scss'
+  templateUrl: './student-overall-rank-report.component.html',
+  styleUrl: './student-overall-rank-report.component.scss'
 })
-export class StudentRankReportComponent {
+export class StudentOverallRankReportComponent {
 
   StudentTopThreeRankList: any[] | undefined;
   StudentTopSubjectRankList: any[] | undefined;
@@ -31,17 +30,12 @@ export class StudentRankReportComponent {
   strMonth: string | undefined;
   strYear: string | undefined;
   strStandard: string | undefined;
-  strDivision: string | undefined;
   strStreamType: string | undefined;
   //UNIT TEST-DECEMBER-2024-STD-XI-B-SCIENCE
 
 
   message: string | undefined;
   errormessage: string | undefined;
-
-  selectedDivision: string | undefined;
-  selectedDivisionId: string = '';
-  divisions: Division[] | undefined;
 
   selectedStandard: string | undefined;
   selectedStandardId: string = '';
@@ -66,7 +60,6 @@ export class StudentRankReportComponent {
 
   constructor(private service: StudentServiceService) { }
   ngOnInit() {
-    this.GetDivisionList();
     this.GetStandardList();
     this.GetMonth();
     this.GetYear();
@@ -77,24 +70,21 @@ export class StudentRankReportComponent {
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
     { field: "rollNo" },
-    { field: "name", resizable: false },
+    { field: "name" },
+    { field: "division" },
     { field: "rank" },
     { field: "totalMarks" }
 
   ];
   colSubjectDefs: ColDef[] = [
     { field: "rollNo" },
-    { field: "name", resizable: false },
+    { field: "name" },
+    { field: "division" },
     { field: "subjectName" },
     { field: "totalMarks" },
     { field: "rank" }
   ];
 
-  GetDivisionList() {
-    this.service.getDivisionList().subscribe(data => {
-      this.divisions = data;
-    })
-  }
   GetStandardList() {
     this.service.getStandardList().subscribe(data => {
       this.standards = data;
@@ -121,10 +111,7 @@ export class StudentRankReportComponent {
     })
   }
 
-  changeDivision(event: any) {
-    this.selectedDivisionId = event.value;
-    this.strDivision = event.source.triggerValue;
-  }
+
   changeStandard(event: any) {
     this.selectedStandardId = event.value;
     this.strStandard = event.source.triggerValue;
@@ -141,6 +128,7 @@ export class StudentRankReportComponent {
     this.selectedYearId = event.value;
     this.strYear = event.source.triggerValue;
   }
+
   changeStreamType(event: any) {
     this.selectedStreamTypeId = event.value;
     this.strStreamType = event.source.triggerValue;
@@ -151,10 +139,7 @@ export class StudentRankReportComponent {
       this.setErrorMessage('Please select TestType');
       return;
     }
-    if (this.selectedDivisionId == "") {
-      this.setErrorMessage('Please select division');
-      return;
-    }
+
     if (this.selectedStandardId == "") {
       this.setErrorMessage('Please select Standard');
       return;
@@ -177,12 +162,11 @@ export class StudentRankReportComponent {
       fromString: 'testTypeId=' + this.selectedTestTypeId +
         '&monthId=' + this.selectedMonthId +
         '&yearId=' + this.selectedYearId +
-        '&divisionId=' + this.selectedDivisionId +
         '&standardId=' + this.selectedStandardId +
         '&streamId=' + this.selectedStreamTypeId
     });
 
-    this.service.getStdentTopThreeRankAndSubjectRankList(params).subscribe(data => {
+    this.service.getStdentTopThreeRankAndSubjectRankInAllDivisionList(params).subscribe(data => {
       this.StudentTopThreeRankList = data[0];
       this.StudentTopSubjectRankList = data[1];
       if (this.reportDownload == true) {
@@ -214,10 +198,9 @@ export class StudentRankReportComponent {
     let Heading2 = [['', this.header2, '']];
     let Heading3 = [['', this.header3, '']];
 
-    let topRank = [['ROLL NO.', 'NAME', 'RANK', 'TOTAL MARKS']];
-    let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'TOTAL MARKS', 'RANK']];
+    let topRank = [['ROLL NO.', 'NAME', 'DIVISION', 'RANK', 'TOTAL MARKS']];
+    let topSubjectRank = [['ROLL NO.', 'NAME', 'DIVISION', 'SUBJECT', 'TOTAL MARKS', 'RANK']];
 
-    /* pass here the table id */
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -225,7 +208,6 @@ export class StudentRankReportComponent {
     XLSX.utils.sheet_add_aoa(ws, Heading1);
     XLSX.utils.sheet_add_aoa(ws, Heading2, { origin: 'A2' });
     XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'A3' });
-    //Starting in the second row to avoid overriding and skipping headers
     XLSX.utils.sheet_add_json(ws, data, { origin: 'A4', skipHeader: true });
 
     XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'A11' });
@@ -240,13 +222,14 @@ export class StudentRankReportComponent {
     ////UNIT TEST-DECEMBER-2024-STD-XI-B-SCIENCE
     this.header1 = this.strTestType + '-' + this.strMonth + '-'
       + this.strYear;
-    this.header2 = 'STD-' + this.strStandard + '-' + this.strDivision + '-' + this.strStreamType;
+    this.header2 = 'STD-' + this.strStandard + '-' + this.strStreamType;
 
     return this.header1 + '-' + this.header2 + '.xlsx';
 
 
   }
 }
+
 
 
 

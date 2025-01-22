@@ -65,5 +65,12 @@ export class StudentServiceService {
     let response2 = this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopRankBySubjectInClass', { params });
     return forkJoin([response1, response2]);
   }
+  getStdentTopThreeRankAndSubjectRankInAllDivisionList(params: HttpParams): Observable<any[]> {
+    let response1 = this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopThreeRankInAllDivision', { params });
+    let response2 = this.http.get<any[]>(this.apiUrl + 'studentreport/GetTopRankBySubjectInAllDivision', { params });
+    return forkJoin([response1, response2]);
+  }
+
+
 
 }

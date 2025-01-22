@@ -46,9 +46,9 @@ export class StudentMarkUpladComponent {
   selectedYearId: string = '';
   years: Year[] | undefined;
 
-  selectedTestHeldOfMark: string | undefined;
-  selectedTestHeldOfMarkId: string = '';
-  testheldofmarks: TestHeldOfMark[] | undefined;
+  // selectedTestHeldOfMark: string | undefined;
+  // selectedTestHeldOfMarkId: string = '';
+  // testheldofmarks: TestHeldOfMark[] | undefined;
 
   selectedStreamType: string | undefined;
   selectedStreamTypeId: string = '';
@@ -61,7 +61,7 @@ export class StudentMarkUpladComponent {
     this.GetMonth();
     this.GetYear();
     this.GetTestTypeList();
-    this.GetAllTestHeldOfMark();
+    //this.GetAllTestHeldOfMark();
     this.GetStreamType();
   }
   onFileChange(event: any) {
@@ -100,11 +100,11 @@ export class StudentMarkUpladComponent {
       this.years = data;
     })
   }
-  GetAllTestHeldOfMark() {
-    this.service.getAllTestHeldOfMark().subscribe(data => {
-      this.testheldofmarks = data;
-    })
-  }
+  // GetAllTestHeldOfMark() {
+  //   this.service.getAllTestHeldOfMark().subscribe(data => {
+  //     this.testheldofmarks = data;
+  //   })
+  // }
   GetStreamType() {
     this.service.getStreamTypes().subscribe(data => {
       this.streamtypes = data;
@@ -127,9 +127,9 @@ export class StudentMarkUpladComponent {
   changeYear(event: any) {
     this.selectedYearId = event.value;
   }
-  changeTestHeldOfMark(event: any) {
-    this.selectedTestHeldOfMarkId = event.value;
-  }
+  // changeTestHeldOfMark(event: any) {
+  //   this.selectedTestHeldOfMarkId = event.value;
+  // }
   changeStreamType(event: any) {
     this.selectedStreamTypeId = event.value;
   }
@@ -157,10 +157,10 @@ export class StudentMarkUpladComponent {
         return;
       }
 
-      if (this.selectedTestHeldOfMarkId == "") {
-        this.setErrorMessage('Please select Test Held Of Mark');
-        return;
-      }
+      // if (this.selectedTestHeldOfMarkId == "") {
+      //   this.setErrorMessage('Please select Test Held Of Mark');
+      //   return;
+      // }
       if (this.selectedStreamTypeId == "") {
         this.setErrorMessage('Please select StreamType');
         return;
@@ -177,25 +177,25 @@ export class StudentMarkUpladComponent {
           '&yearId=' + this.selectedYearId +
           '&divisionId=' + this.selectedDivisionId +
           '&standardId=' + this.selectedStandardId +
-          '&streamId=' + this.selectedStreamTypeId +
-          '&testHeldOfMarkId=' + this.selectedTestHeldOfMarkId
+          '&streamId=' + this.selectedStreamTypeId
+        // '&testHeldOfMarkId=' + this.selectedTestHeldOfMarkId
       });
       this.service.UploadStudentMarks(formData, params).subscribe(result => {
         this.message = result.success;
-        this.selectedDivision = "";
-        this.selectedDivisionId = "";
-        this.selectedStandard = "";
-        this.selectedStandardId = "";
-        this.selectedTestType = "";
-        this.selectedTestTypeId = "";
-        this.selectedMonth = "";
-        this.selectedMonthId = "";
-        this.selectedYear = "";
-        this.selectedYearId = "";
-        this.selectedTestHeldOfMark = "";
-        this.selectedTestHeldOfMarkId = "";
-        this.selectedStreamType = "";
-        this.selectedStreamTypeId = "";
+        // this.selectedDivision = "";
+        // this.selectedDivisionId = "";
+        // this.selectedStandard = "";
+        // this.selectedStandardId = "";
+        // this.selectedTestType = "";
+        // this.selectedTestTypeId = "";
+        // this.selectedMonth = "";
+        // this.selectedMonthId = "";
+        // this.selectedYear = "";
+        // this.selectedYearId = "";
+        //             //this.selectedTestHeldOfMark = "";
+        //             //this.selectedTestHeldOfMarkId = "";
+        // this.selectedStreamType = "";
+        // this.selectedStreamTypeId = "";
         this.upoadinput.nativeElement.value = "";
 
       })

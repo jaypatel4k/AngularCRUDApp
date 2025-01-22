@@ -13,14 +13,6 @@
                 }
             </mat-select>
         </mat-form-field>
-        <mat-form-field style="padding-right: 2px;width:115px">
-            <mat-label>Division</mat-label>
-            <mat-select [(ngModel)]="selectedDivision" name="division" (selectionChange)="changeDivision($event)">
-                @for (division of divisions; track division) {
-                <mat-option [value]="division.id">{{division.divisionName}}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
 
         <mat-form-field style="padding-right: 2px;width:125px">
             <mat-label>Standard</mat-label>

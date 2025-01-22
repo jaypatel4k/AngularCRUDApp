@@ -10,6 +10,7 @@ import { ShowStudentComponent } from './student/show-student/show-student.compon
 import { StudentUploadComponent } from './student/student-upload/student-upload.component';
 import { StudentMarkUpladComponent } from './student/student-mark-uplad/student-mark-uplad.component';
 import { StudentRankReportComponent } from './student/student-rank-report/student-rank-report.component';
+import { StudentOverallRankReportComponent } from './student/student-overall-rank-report/student-overall-rank-report.component';
 
 export const routes: Routes = [
     { path: 'employeetest', component: ShowtestempComponent },
@@ -21,5 +22,6 @@ export const routes: Routes = [
     { path: 'upload-student-mark', component: StudentMarkUpladComponent },
     { path: 'showstudent', component: ShowStudentComponent },
     { path: 'rankreport', component: StudentRankReportComponent },
+    { path: 'rankoverallreport', component: StudentOverallRankReportComponent },
     { path: '', component: LoginComponent }
 ];
