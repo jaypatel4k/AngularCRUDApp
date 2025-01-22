@@ -170,7 +170,7 @@ export class StudentOverallRankReportComponent {
       this.StudentTopThreeRankList = data[0];
       this.StudentTopSubjectRankList = data[1];
       if (this.reportDownload == true) {
-        this.exportexcel(data[0], data[1]);
+        this.exportexcel(data[0], data[1], data[2], data[3]);
       }
 
     })
@@ -190,16 +190,18 @@ export class StudentOverallRankReportComponent {
   header2 = '';
   header3 = '';
 
-  exportexcel(data: any, data1: any): void {
+  exportexcel(data: any, data1: any, data2: any, data3: any): void {
     this.fileName = this.generateFileName();
     //console.log(this.fileName);
     this.header3 = 'Highest Marks obtained in various Subjects';
     let Heading1 = [['', this.header1, '']];
     let Heading2 = [['', this.header2, '']];
     let Heading3 = [['', this.header3, '']];
+    let Heading4 = [['', 'FIRST , SECOND, THIRD RANK IN ALL DIVISION', '']];
+    let Heading5 = [['', 'HIGHEST IN ALL SUBJECT AND ALL DIVISION', '']];
 
-    let topRank = [['ROLL NO.', 'NAME', 'DIVISION', 'RANK', 'TOTAL MARKS']];
-    let topSubjectRank = [['ROLL NO.', 'NAME', 'DIVISION', 'SUBJECT', 'TOTAL MARKS', 'RANK']];
+    let topRank = [['ROLL NO.', 'NAME', 'DIVISION', 'RANK', 'TOTAL']];
+    let topSubjectRank = [['ROLL NO.', 'NAME', 'DIVISION', 'SUBJECT', 'TOTAL', 'RANK']];
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     /* generate workbook and add the worksheet */
@@ -213,6 +215,18 @@ export class StudentOverallRankReportComponent {
     XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'A11' });
     XLSX.utils.sheet_add_aoa(ws, topSubjectRank, { origin: 'A12' });
     XLSX.utils.sheet_add_json(ws, data1, { origin: 'A13', skipHeader: true });
+
+    XLSX.utils.sheet_add_aoa(ws, Heading4, { origin: 'H4' });
+    XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'H5' });
+    XLSX.utils.sheet_add_json(ws, data2, { origin: 'H6', skipHeader: true });
+
+
+    XLSX.utils.sheet_add_aoa(ws, Heading5, { origin: 'H23' });
+    XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'H24' });
+    XLSX.utils.sheet_add_json(ws, data3, { origin: 'H25', skipHeader: true });
+
+
+
 
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */
