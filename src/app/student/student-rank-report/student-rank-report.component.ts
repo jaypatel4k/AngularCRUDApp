@@ -9,8 +9,9 @@ import { HttpParams } from '@angular/common/http';
 import { MatButton } from '@angular/material/button';
 import { AllCommunityModule, ColDef, GridApi, GridReadyEvent, ModuleRegistry } from 'ag-grid-community';
 import { AgGridAngular } from 'ag-grid-angular';
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { CommonserviceService } from '../../services/commonservice.service';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -64,7 +65,7 @@ export class StudentRankReportComponent {
   streamtypes: StreamType[] | undefined;
   reportDownload: boolean | undefined;
 
-  constructor(private service: StudentServiceService) { }
+  constructor(private service: StudentServiceService, private commonService: CommonserviceService) { }
   ngOnInit() {
     this.GetDivisionList();
     this.GetStandardList();
@@ -200,37 +201,107 @@ export class StudentRankReportComponent {
     this.gridApi = params.api;
   }
 
-  title = 'Top Rank';
   fileName = '';
+  header0 = '';
   header1 = '';
   header2 = '';
   header3 = '';
 
   exportexcel(data: any, data1: any): void {
     this.fileName = this.generateFileName();
-    //console.log(this.fileName);
-    this.header3 = 'Highest Marks obtained in various Subjects';
-    let Heading1 = [['', this.header1, '']];
-    let Heading2 = [['', this.header2, '']];
-    let Heading3 = [['', this.header3, '']];
 
-    let topRank = [['ROLL NO.', 'NAME', 'RANK', 'TOTAL MARKS']];
-    let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'TOTAL MARKS', 'RANK']];
+    this.header0 = this.commonService.schoolnameheading;
+    this.header3 = this.commonService.highestmarkobtainheader;
+
+    let Heading0 = [[this.header0]];
+    let Heading1 = [[this.header1]];
+    let Heading2 = [[this.header2]];
+    let Heading3 = [[this.header3]];
+
+    let topRank = [['ROLL NO.', 'NAME', 'RANK', 'TOTAL']];
+    let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'MARKS', 'RANK']];
+
+    const merge = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } },
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 4 } },
+      { s: { r: 11, c: 0 }, e: { r: 11, c: 5 } },
+    ];
+
+
 
     /* pass here the table id */
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
 
-    XLSX.utils.sheet_add_aoa(ws, Heading1);
-    XLSX.utils.sheet_add_aoa(ws, Heading2, { origin: 'A2' });
-    XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'A3' });
-    //Starting in the second row to avoid overriding and skipping headers
-    XLSX.utils.sheet_add_json(ws, data, { origin: 'A4', skipHeader: true });
 
-    XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'A11' });
-    XLSX.utils.sheet_add_aoa(ws, topSubjectRank, { origin: 'A12' });
-    XLSX.utils.sheet_add_json(ws, data1, { origin: 'A13', skipHeader: true });
+
+    XLSX.utils.sheet_add_aoa(ws, Heading0, { origin: 'A1' });
+    XLSX.utils.sheet_add_aoa(ws, Heading1, { origin: 'A2' });
+    XLSX.utils.sheet_add_aoa(ws, Heading2, { origin: 'A3' });
+    XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'A4' });
+    //Starting in the second row to avoid overriding and skipping headers
+    XLSX.utils.sheet_add_json(ws, data, { origin: 'A5', skipHeader: true });
+
+    XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'A12' });
+    XLSX.utils.sheet_add_aoa(ws, topSubjectRank, { origin: 'A13' });
+    XLSX.utils.sheet_add_json(ws, data1, { origin: 'A14', skipHeader: true });
+
+    ws['A1'].s = {
+      font: {
+        name: 'Times New Roman',
+        sz: 14,
+        bold: true,
+        color: "#000000"
+      },
+      alignment: { horizontal: 'center' }
+    }
+    ws['A2'].s = {
+      font: {
+        name: 'Times New Roman',
+        sz: 12,
+        bold: true,
+        color: { rgb: "1a75ff" },
+      },
+      alignment: { horizontal: 'center' }
+    }
+    ws['A3'].s = {
+      font: {
+        name: 'Times New Roman',
+        sz: 12,
+        bold: true,
+        color: "#000000"
+      },
+      alignment: { horizontal: 'center' }
+    }
+
+    ws['A12'].s = {
+      font: {
+        name: 'Times New Roman',
+        sz: 12,
+        bold: true,
+        color: "#000000"
+      },
+      alignment: { horizontal: 'center' }
+    }
+    var wscols = [];
+    var cols_width = 16; // Default cell width
+    wscols.push({
+      wch: 10
+    });
+    wscols.push({
+      wch: 40
+    });
+    wscols.push({
+      wch: 10
+    });
+    wscols.push({
+      wch: 10
+    });
+    ws["!cols"] = wscols;
+    ws["!merges"] = merge;
+
 
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */
@@ -243,9 +314,8 @@ export class StudentRankReportComponent {
     this.header2 = 'STD-' + this.strStandard + '-' + this.strDivision + '-' + this.strStreamType;
 
     return this.header1 + '-' + this.header2 + '.xlsx';
-
-
   }
+
 }
 
 

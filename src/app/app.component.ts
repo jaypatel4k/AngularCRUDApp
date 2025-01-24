@@ -9,7 +9,7 @@ import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, ShowSpinnerComponent, MatButton],
+  imports: [RouterOutlet, ShowSpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
