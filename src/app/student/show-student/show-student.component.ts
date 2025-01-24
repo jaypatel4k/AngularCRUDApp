@@ -35,7 +35,7 @@ export class ShowStudentComponent {
   divisions: Division[] | undefined;
   standards: Standard[] | undefined;
 
-  StudentList: any = [];
+  StudentList: any[] | undefined;
   ngOnInit() {
     this.GetDivisionList();
     this.GetStandardList();

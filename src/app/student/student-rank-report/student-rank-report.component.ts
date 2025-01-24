@@ -80,15 +80,14 @@ export class StudentRankReportComponent {
     { field: "rollNo" },
     { field: "name", resizable: false },
     { field: "rank" },
-    { field: "totalMarks" }
+    { field: "total" }
 
   ];
   colSubjectDefs: ColDef[] = [
     { field: "rollNo" },
     { field: "name", resizable: false },
-    { field: "subjectName" },
-    { field: "totalMarks" },
-    { field: "rank" }
+    { field: "subject" },
+    { field: "marks" }
   ];
 
   GetDivisionList() {
@@ -219,7 +218,7 @@ export class StudentRankReportComponent {
     let Heading3 = [[this.header3]];
 
     let topRank = [['ROLL NO.', 'NAME', 'RANK', 'TOTAL']];
-    let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'MARKS', 'RANK']];
+    let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'MARKS']];
 
     const merge = [
       { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } },

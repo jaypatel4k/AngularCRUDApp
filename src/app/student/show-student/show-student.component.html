@@ -29,7 +29,7 @@
         <button (click)="GetStudentList()" mat-flat-button>Get Data</button>
     </div>
     <div style="clear:both;"></div>
-    <div>
+    <div *ngIf="StudentList">
         <ag-grid-angular [rowData]="StudentList" [columnDefs]="colDefs" style="height: 600px;width:auto;"
             (gridReady)="onGridReady($event)" />
     </div>

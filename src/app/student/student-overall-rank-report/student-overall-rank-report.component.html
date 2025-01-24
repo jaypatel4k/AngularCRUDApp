@@ -1,9 +1,8 @@
 <app-student-navigation></app-student-navigation>
-<mat-label>Upload Student Marks</mat-label>
 <p><mat-label style="color: green;">{{message}}</mat-label></p>
 <label class="form-label" style="color: red;">{{errormessage}}</label>
 <form>
-    <div style="width: 100%">
+    <div style="width: 100%;padding-top: 5px;">
 
         <mat-form-field style="padding-right: 2px;width:135px">
             <mat-label>Test Type</mat-label>
@@ -49,8 +48,8 @@
     </div>
     <div class="example-button-row" style="float:left;">
         <button (click)="fetchData()" mat-flat-button>View Rank Report</button>
-        <mat-checkbox class="example-margin" checked="true" name="checkDownload"
-            [(ngModel)]="reportDownload">Checked</mat-checkbox>
+        <mat-checkbox class="example-margin" checked="true" name="checkDownload" [(ngModel)]="reportDownload">Download
+            Report</mat-checkbox>
     </div>
     <div style="clear:both;"></div>
     <div *ngIf="StudentTopThreeRankList">
@@ -59,6 +58,14 @@
     </div>
     <div *ngIf="StudentTopSubjectRankList">
         <ag-grid-angular [rowData]="StudentTopSubjectRankList" [columnDefs]="colSubjectDefs"
+            style="height: 400px;width:auto;" (gridReady)="onGridReady($event)" />
+    </div>
+    <div *ngIf="FirstSecondThridRankList">
+        <ag-grid-angular [rowData]="FirstSecondThridRankList" [columnDefs]="colDefs" style="height: 400px;width:auto;"
+            (gridReady)="onGridReady($event)" />
+    </div>
+    <div *ngIf="HighestInAllSubjectAndAllDiv">
+        <ag-grid-angular [rowData]="HighestInAllSubjectAndAllDiv" [columnDefs]="colSubjectDefs"
             style="height: 400px;width:auto;" (gridReady)="onGridReady($event)" />
     </div>
 </form>

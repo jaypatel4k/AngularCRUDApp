@@ -25,6 +25,8 @@ export class StudentOverallRankReportComponent {
 
   StudentTopThreeRankList: any[] | undefined;
   StudentTopSubjectRankList: any[] | undefined;
+  FirstSecondThridRankList: any[] | undefined;
+  HighestInAllSubjectAndAllDiv: any[] | undefined;
   private gridApi!: GridApi;
 
   strTestType: string | undefined;
@@ -34,7 +36,7 @@ export class StudentOverallRankReportComponent {
   strStreamType: string | undefined;
   //UNIT TEST-DECEMBER-2024-STD-XI-B-SCIENCE
 
-
+  strAllDivision: string = '';
   message: string | undefined;
   errormessage: string | undefined;
 
@@ -58,6 +60,7 @@ export class StudentOverallRankReportComponent {
   selectedStreamTypeId: string = '';
   streamtypes: StreamType[] | undefined;
   reportDownload: boolean | undefined;
+  test: any;
 
   constructor(private service: StudentServiceService, private commonService: CommonserviceService) { }
   ngOnInit() {
@@ -72,17 +75,17 @@ export class StudentOverallRankReportComponent {
   colDefs: ColDef[] = [
     { field: "rollNo" },
     { field: "name" },
-    { field: "division" },
+    { field: "div" },
     { field: "rank" },
-    { field: "totalMarks" }
+    { field: "total" }
 
   ];
   colSubjectDefs: ColDef[] = [
     { field: "rollNo" },
     { field: "name" },
-    { field: "division" },
-    { field: "subjectName" },
-    { field: "totalMarks" }
+    { field: "div" },
+    { field: "subject" },
+    { field: "marks" }
   ];
 
   GetStandardList() {
@@ -169,6 +172,14 @@ export class StudentOverallRankReportComponent {
     this.service.getStdentTopThreeRankAndSubjectRankInAllDivisionList(params).subscribe(data => {
       this.StudentTopThreeRankList = data[0];
       this.StudentTopSubjectRankList = data[1];
+      this.FirstSecondThridRankList = data[2];
+      this.HighestInAllSubjectAndAllDiv = data[3];
+
+      data[1].forEach((e: { div: any; }) => {
+        if (this.strAllDivision.indexOf(e.div) == -1)
+          this.strAllDivision = this.strAllDivision.concat(e.div + '/');
+      })
+      this.strAllDivision = this.strAllDivision.substring(0, this.strAllDivision.length - 1);
       if (this.reportDownload == true) {
         this.exportexcel(data[0], data[1], data[2], data[3]);
       }
@@ -205,7 +216,7 @@ export class StudentOverallRankReportComponent {
     let Heading6 = [[this.commonService.congatesheading]];
 
     let topRank = [['ROLL NO.', 'NAME', 'DIV.', 'RANK', 'TOTAL']];
-    let topSubjectRank = [['ROLL NO.', 'NAME', 'DIV.', 'SUBJECT', 'TOTAL']];
+    let topSubjectRank = [['ROLL NO.', 'NAME', 'DIV.', 'SUBJECT', 'MARKS']];
 
     const merge = [
       { s: { r: 2, c: 1 }, e: { r: 2, c: 5 } },
@@ -240,7 +251,7 @@ export class StudentOverallRankReportComponent {
 
 
     XLSX.utils.sheet_add_aoa(ws, Heading5, { origin: 'H23' });
-    XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'H24' });
+    XLSX.utils.sheet_add_aoa(ws, topSubjectRank, { origin: 'H24' });
     XLSX.utils.sheet_add_json(ws, data3, { origin: 'H25', skipHeader: true });
 
     ws['B3'].s = {
@@ -348,7 +359,7 @@ export class StudentOverallRankReportComponent {
     ////UNIT TEST-DECEMBER-2024-STD-XI-B-SCIENCE
     this.header1 = this.strTestType + '-' + this.strMonth + '-'
       + this.strYear;
-    this.header2 = 'STD-' + this.strStandard + '-' + this.strStreamType;
+    this.header2 = 'STD-' + this.strStandard + '-' + this.strStreamType + '(' + this.strAllDivision + ')';
 
     return this.header1 + '-' + this.header2 + '.xlsx';
 
