@@ -1,7 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { NgIf } from '@angular/common';
-import * as XLSX from 'xlsx';
 import { FormsModule } from '@angular/forms';
 import { StudentServiceService } from '../../services/student-service.service';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
