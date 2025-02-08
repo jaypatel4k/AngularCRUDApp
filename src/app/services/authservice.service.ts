@@ -13,14 +13,14 @@ export class AuthserviceService {
   constructor(private http: HttpClient) { }
 
   userlogin(credential: any): Observable<any> {
-    //const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    // return this.http.post<any>(this.apiUrl + 'login', credential, httpOptions);
     return this.http.post<any>(this.apiUrl + 'login', credential);
   }
 
   isAuthenticatedUser(): boolean {
-    if (localStorage.getItem('token') != null)
+    if (localStorage.getItem('token') != null) {
+      console.log(localStorage.getItem("tokenExpiration"));
       return true;
+    }
     else
       return false;
   }

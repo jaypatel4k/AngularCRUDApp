@@ -89,9 +89,12 @@ export class StudentUploadComponent {
       }
       let formData = new FormData();
       formData.append('file', this.file);
+      formData.append('divisionid', this.selectedDivisionId);
+      formData.append('standardid', this.selectedStandardId);
       let params = new HttpParams({ fromString: 'divisionId=' + this.selectedDivisionId + '&standadId=' + this.selectedStandardId });
 
-      this.service.UploadStudent(formData, params).subscribe(result => {
+      // this.service.UploadStudent(formData, params).subscribe(result => {
+      this.service.UploadStudent(formData).subscribe(result => {
         this.message = result.success;
         this.selectedDivision = "";
         this.selectedStandard = "";

@@ -170,32 +170,26 @@ export class StudentMarkUpladComponent {
         return;
       }
       let formData = new FormData();
+      formData.append('TestTypeId', this.selectedTestTypeId);
+      formData.append('DivisionId', this.selectedDivisionId);
+      formData.append('StandardId', this.selectedStandardId);
+      formData.append('YearId', this.selectedYearId);
+      formData.append('MonthId', this.selectedMonthId);
+      formData.append('StreamId', this.selectedStreamTypeId);
       formData.append('file', this.file);
-      let params = new HttpParams({
-        fromString: 'testTypeId=' + this.selectedTestTypeId +
-          '&monthId=' + this.selectedMonthId +
-          '&yearId=' + this.selectedYearId +
-          '&divisionId=' + this.selectedDivisionId +
-          '&standardId=' + this.selectedStandardId +
-          '&streamId=' + this.selectedStreamTypeId
-        // '&testHeldOfMarkId=' + this.selectedTestHeldOfMarkId
-      });
-      this.service.UploadStudentMarks(formData, params).subscribe(result => {
+
+      // let params = new HttpParams({
+      //   fromString: 'testTypeId=' + this.selectedTestTypeId +
+      //     '&monthId=' + this.selectedMonthId +
+      //     '&yearId=' + this.selectedYearId +
+      //     '&divisionId=' + this.selectedDivisionId +
+      //     '&standardId=' + this.selectedStandardId +
+      //     '&streamId=' + this.selectedStreamTypeId
+      //   // '&testHeldOfMarkId=' + this.selectedTestHeldOfMarkId
+      // });
+      //this.service.UploadStudentMarks(formData, params).subscribe(result => {
+      this.service.UploadStudentMarks(formData).subscribe(result => {
         this.message = result.success;
-        // this.selectedDivision = "";
-        // this.selectedDivisionId = "";
-        // this.selectedStandard = "";
-        // this.selectedStandardId = "";
-        // this.selectedTestType = "";
-        // this.selectedTestTypeId = "";
-        // this.selectedMonth = "";
-        // this.selectedMonthId = "";
-        // this.selectedYear = "";
-        // this.selectedYearId = "";
-        //             //this.selectedTestHeldOfMark = "";
-        //             //this.selectedTestHeldOfMarkId = "";
-        // this.selectedStreamType = "";
-        // this.selectedStreamTypeId = "";
         this.upoadinput.nativeElement.value = "";
 
       })

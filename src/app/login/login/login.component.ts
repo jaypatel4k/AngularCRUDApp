@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { HandleErrorService } from '../../services/handle-error.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,13 @@ import { MatInputModule } from '@angular/material/input';
 })
 
 export class LoginComponent {
+  public message: string | undefined;
   public loginForm: FormGroup;
   public submitted = false;
 
 
 
-  constructor(private fb: FormBuilder, private authservice: AuthserviceService, private router: Router) {
+  constructor(private fb: FormBuilder, private authservice: AuthserviceService, private router: Router, private handleerror: HandleErrorService) {
     this.loginForm = this.fb.group({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required,
@@ -33,18 +35,43 @@ export class LoginComponent {
   onLogin(): void {
     this.submitted = true;
 
+    // if (this.loginForm.valid) {
+    //   const credential = JSON.stringify(this.loginForm.value);
+    //   this.authservice.userlogin(credential).subscribe(res => {
+    //     let result = res['token'];
+    //     localStorage.setItem('token', result);
+    //     // return true;
+    //     this.router.navigate(['./department']);
+    //     //alert(res['status']);
+    //   }
+    //   )
+
+    // }
+
+
     if (this.loginForm.valid) {
       const credential = JSON.stringify(this.loginForm.value);
-      this.authservice.userlogin(credential).subscribe(res => {
-        let result = res['token'];
-        localStorage.setItem('token', result);
-        // return true;
-        this.router.navigate(['./department']);
-        //alert(res['status']);
-      }
-      )
+      this.authservice.userlogin(credential).subscribe({
+        next: (res) => {
+          let result = res['token'];
+          localStorage.setItem('token', result);
+          this.router.navigate(['./showstudent']);
+        },
+        error: (e) => {
+          //alert(e.error.message);
+          //console.error(e.error.message);
+          this.message = e.error.message;
+          this.handleerror.handleError(e);
+        },
+        complete: () => {
+          console.info('complete');
+        }
+      })
 
     }
+
+
+
   }
   logOut() {
     localStorage.removeItem('token');

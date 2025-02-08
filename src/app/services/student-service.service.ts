@@ -16,7 +16,8 @@ export class StudentServiceService {
   constructor(private http: HttpClient) { }
 
 
-  UploadStudent(formdata: FormData, params: HttpParams): Observable<any> {
+  //UploadStudent(formdata: FormData, params: HttpParams): Observable<any> {
+  UploadStudent(formdata: FormData): Observable<any> {
     let headers = new HttpHeaders();
 
     // headers.append('Content-Type', 'multipart/form-data');
@@ -25,15 +26,18 @@ export class StudentServiceService {
 
     const httpOptions = { headers: headers };
 
-    return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata, { params })
+    // return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata, { params })
+    return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata);
 
   }
-  UploadStudentMarks(formdata: FormData, params: HttpParams): Observable<any> {
+  // UploadStudentMarks(formdata: FormData, params: HttpParams): Observable<any> {
+  UploadStudentMarks(formdata: FormData): Observable<any> {
     let headers = new HttpHeaders();
 
     const httpOptions = { headers: headers };
 
-    return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata, { params })
+    //return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata, { params })
+    return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata)
 
   }
   getStudentListByStandardAndDivision(params: HttpParams): Observable<any[]> {
