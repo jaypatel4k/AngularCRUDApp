@@ -40,6 +40,12 @@ export class StudentServiceService {
     return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata)
 
   }
+  AddSubjectOrDivOrTesttype(formdata: FormData): Observable<any> {
+    // console.log(formdata.get("fieldtype"));
+    const body = { fieldtype: formdata.get("fieldtype"), fieldvalue: formdata.get("fieldvalue") };
+    return this.http.post(this.apiUrl + 'studentreport/' + formdata.get("fieldtype"), body);
+  }
+
   getStudentListByStandardAndDivision(params: HttpParams): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl + 'studentreport/GetStudentListByDivAndStandard', { params });
   }

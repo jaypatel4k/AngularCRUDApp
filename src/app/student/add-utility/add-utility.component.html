@@ -1,0 +1,23 @@
+<app-student-navigation></app-student-navigation>
+<p><mat-label style="color: green;">{{message}}</mat-label></p>
+<label class="form-label" style="color: red;">{{errormessage}}</label>
+<form #utilityForm="ngForm" (ngSubmit)="onSubmit(utilityForm)">
+    <div style="width: 100%;padding-top:20px">
+
+        <mat-form-field style="padding-right: 2px;width:260px">
+            <mat-label>Subject/Test Type/Division</mat-label>
+            <mat-select name="fieldtype" ngModel>
+                <!-- <mat-option [ngValue]="addtesttype">Test Type</mat-option>
+                <mat-option value="addsubject">Subject</mat-option>
+                <mat-option value="addstreamtype">Stream Type</mat-option> -->
+                <mat-option [value]="c.id" *ngFor="let c of utilityList">{{c.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:180px">
+            <mat-label>Add Value</mat-label>
+            <input type="text" matInput name="fieldvalue" ngModel>
+        </mat-form-field>
+    </div>
+    <!-- <input type="submit" name="Submit"> -->
+    <button mat-flat-button type="submit" name="Submit">Add</button>
+</form>

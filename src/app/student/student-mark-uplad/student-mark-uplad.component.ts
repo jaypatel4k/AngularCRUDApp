@@ -188,9 +188,21 @@ export class StudentMarkUpladComponent {
       //   // '&testHeldOfMarkId=' + this.selectedTestHeldOfMarkId
       // });
       //this.service.UploadStudentMarks(formData, params).subscribe(result => {
-      this.service.UploadStudentMarks(formData).subscribe(result => {
-        this.message = result.success;
-        this.upoadinput.nativeElement.value = "";
+      this.service.UploadStudentMarks(formData).subscribe({
+        // result => {
+        //   this.message = result.success;
+        //   this.upoadinput.nativeElement.value = "";
+        // },
+        // error => {
+        //   console.log(error.message);
+        // }
+        next: (res) => {
+          this.message = res.success;
+          this.upoadinput.nativeElement.value = "";
+        },
+        error: (e) => {
+          this.setErrorMessage(e.error);
+        }
 
       })
     } else {
