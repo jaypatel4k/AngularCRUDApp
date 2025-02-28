@@ -88,6 +88,10 @@ export class StudentServiceService {
     return forkJoin([response1, response2, response3, response4]);
   }
 
+  getStdent5PerecentRankList(params: HttpParams): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl + 'studentreport/Get5PercentMarkTotal', { params });
+  }
+
 
 
 }

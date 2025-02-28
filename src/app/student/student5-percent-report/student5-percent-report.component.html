@@ -1,0 +1,34 @@
+<app-student-navigation></app-student-navigation>
+<p><mat-label style="color: green;">{{message}}</mat-label></p>
+<label class="form-label" style="color: red;">{{errormessage}}</label>
+<form #utilityForm2="ngForm" (ngSubmit)="onClick(utilityForm2)">
+    <div style="width: 100%;padding-top: 5px;">
+        <mat-form-field style="padding-right: 2px;width:150px">
+            <mat-label>Standard</mat-label>
+            <mat-select ngModel name="standard">
+                @for (standard of standards; track standard) {
+                <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:200px">
+            <mat-label>Select Group A</mat-label>
+            <mat-select name="testtypeA" multiple ngModel>
+
+                @for (testtype of testtypes; track testtype) {
+                <mat-option [value]="testtype.id">{{testtype.testTypeName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="padding-right: 2px;width:200px">
+            <mat-label>Select Group B</mat-label>
+            <mat-select name="testtypeB" multiple ngModel>
+
+                @for (testtype of testtypes; track testtype) {
+                <mat-option [value]="testtype.id">{{testtype.testTypeName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <button mat-flat-button type="submit" name="AddGroup">Add Group</button>
+    </div>
+</form>
