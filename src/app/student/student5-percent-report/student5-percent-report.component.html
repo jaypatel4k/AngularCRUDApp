@@ -5,7 +5,7 @@
     <div style="width: 100%;padding-top: 5px;">
         <mat-form-field style="padding-right: 2px;width:150px">
             <mat-label>Standard</mat-label>
-            <mat-select ngModel name="standard">
+            <mat-select ngModel name="standardid">
                 @for (standard of standards; track standard) {
                 <mat-option [value]="standard.id">{{standard.standardName}}</mat-option>
                 }
@@ -13,7 +13,7 @@
         </mat-form-field>
         <mat-form-field style="padding-right: 2px;width:200px">
             <mat-label>Select Group A</mat-label>
-            <mat-select name="testtypeA" multiple ngModel>
+            <mat-select name="testtypeGroupA" multiple ngModel>
 
                 @for (testtype of testtypes; track testtype) {
                 <mat-option [value]="testtype.id">{{testtype.testTypeName}}</mat-option>
@@ -22,7 +22,7 @@
         </mat-form-field>
         <mat-form-field style="padding-right: 2px;width:200px">
             <mat-label>Select Group B</mat-label>
-            <mat-select name="testtypeB" multiple ngModel>
+            <mat-select name="testtypeGroupB" multiple ngModel>
 
                 @for (testtype of testtypes; track testtype) {
                 <mat-option [value]="testtype.id">{{testtype.testTypeName}}</mat-option>
