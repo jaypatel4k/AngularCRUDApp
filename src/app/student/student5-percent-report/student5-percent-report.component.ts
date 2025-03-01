@@ -36,6 +36,7 @@ export class Student5PercentReportComponent {
     this.strTestTypeGroupA = utilityForm2.value.testtypeGroupA;
     this.strTestTypeGroupB = utilityForm2.value.testtypeGroupB;
     this.standardId = utilityForm2.value.standardid;
+
     this.GetRankData();
   }
 
@@ -70,24 +71,77 @@ export class Student5PercentReportComponent {
   fileName = '';
   header0 = '';
   header1 = '';
+  header11 = '';
   header2 = '';
+  header22 = '';
   header3 = '';
+  header33 = '';
+  strdivision = '';
 
   exportexcel(data: any): void {
     this.fileName = this.generateFileName();
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+
+    let strSheet: string = '';
+    let strTestTypes: string = '';
+
+
+    strSheet = data[data.length - 1][0].sheetsNames;
+    const aSheet = strSheet.split("~");
+
+    strTestTypes = data[data.length - 1][0].typeNames;
+    const aTestTypes = strTestTypes?.split("~");
+    let strTestTypesA = aTestTypes[0].toString();
+    let strTestTypesB = aTestTypes[1].toString();
+    this.strdivision = aTestTypes[2].toString();
+    const aTestGroupA = strTestTypesA?.split("_");
+    const aTestGroupB = strTestTypesB?.split("_");
+    this.fileName = this.generateFileName();
+
+    const key = Object.keys(data[0][0]); // retive key from first data object
+    let aheader = [];
+    for (let c = 0; c < key.length; c++) {
+      if (c <= 1)
+        key[c] = "";
+      if (key[c] == "unit1" && aTestGroupA.length >= 1)
+        key[c] = aTestGroupA[0];
+      if (key[c] == "unit2" && aTestGroupA.length >= 2)
+        key[c] = aTestGroupA[1];
+      if (key[c] == "unit3" && aTestGroupA.length >= 3)
+        key[c] = aTestGroupA[2];
+      if (key[c] == "unit4" && aTestGroupA.length >= 4)
+        key[c] = aTestGroupA[3];
+
+      if (key[c] == "unit5" && aTestGroupB.length >= 1)
+        key[c] = aTestGroupB[0];
+      if (key[c] == "unit6" && aTestGroupB.length >= 2)
+        key[c] = aTestGroupA[1];
+      if (key[c] == "unit7" && aTestGroupB.length >= 3)
+        key[c] = aTestGroupA[2];
+      if (key[c] == "unit8" && aTestGroupB.length >= 4)
+        key[c] = aTestGroupA[3];
+
+      key[c] = key[c].toUpperCase().replace("_", " ").replace("5PERCENT", "5%").replace("BEST1", "BEST").replace("CW", "C.W.").replace("HW", "H.W.").replace("NAME", "NAME OF STUDENT");
+    }
+    aheader.push(key);
+
     for (let cnt = 0; cnt <= data.length - 2; cnt++) {
-      this.header0 = this.commonService.schoolnameheading;
+      this.header0 = 'INTERNAL MARKSHEET-' + this.getCurrentFiscalYear();
       //this.header3 = this.commonService.highestmarkobtainheader;
+      this.header1 = aSheet[0].split("-")[0];
+      this.header2 = aSheet[0].split("-")[2];
+      this.header3 = aSheet[0].split("-")[1];
+      this.header11 = 'CLASS';
+      this.header22 = 'SUBJECT';
+      this.header33 = 'DIV.';
 
       let Heading0 = [[this.header0]];
       let Heading1 = [[this.header1]];
+      let Heading11 = [[this.header11]];
       let Heading2 = [[this.header2]];
-      // let Heading3 = [[this.header3]];
-
-      let topRank = [['ROLL NO.', 'NAME', 'RANK', 'TOTAL']];
-      let topSubjectRank = [['ROLL NO.', 'NAME', 'SUBJECT', 'MARKS']];
+      let Heading22 = [[this.header22]];
+      let Heading3 = [[this.header3]];
+      let Heading33 = [[this.header33]];
 
       // const merge = [
       //   { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } },
@@ -97,6 +151,7 @@ export class Student5PercentReportComponent {
       // ];
       const merge = [
         { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }
+        // { s: { r: 1, c: 3 }, e: { r: 1, c: 4 } }
       ];
 
 
@@ -109,73 +164,131 @@ export class Student5PercentReportComponent {
 
 
       XLSX.utils.sheet_add_aoa(ws, Heading0, { origin: 'A1' });
-      XLSX.utils.sheet_add_aoa(ws, Heading1, { origin: 'A2' });
-      XLSX.utils.sheet_add_aoa(ws, Heading2, { origin: 'A3' });
-      // XLSX.utils.sheet_add_aoa(ws, topRank, { origin: 'A4' });
+      XLSX.utils.sheet_add_aoa(ws, Heading11, { origin: 'C2' });
+      XLSX.utils.sheet_add_aoa(ws, Heading1, { origin: 'D2' });
+      XLSX.utils.sheet_add_aoa(ws, Heading22, { origin: 'C3' });
+      XLSX.utils.sheet_add_aoa(ws, Heading2, { origin: 'D3' });
+      XLSX.utils.sheet_add_aoa(ws, Heading33, { origin: 'E2' });
+      XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'F2' });
+      XLSX.utils.sheet_add_aoa(ws, aheader, { origin: 'A4' });
       //Starting in the second row to avoid overriding and skipping headers
-      XLSX.utils.sheet_add_json(ws, data[cnt], { origin: 'A5', skipHeader: false });
+      XLSX.utils.sheet_add_json(ws, data[cnt], { origin: 'A5', skipHeader: true });
 
-      // XLSX.utils.sheet_add_aoa(ws, Heading3, { origin: 'A12' });
-      // XLSX.utils.sheet_add_aoa(ws, topSubjectRank, { origin: 'A13' });
-      // XLSX.utils.sheet_add_json(ws, data1, { origin: 'A14', skipHeader: true });
 
       ws['A1'].s = {
         font: {
-          name: 'Times New Roman',
-          sz: 14,
-          bold: true,
+          name: 'Calibri',
+          sz: 12,
           color: "#000000"
         },
         alignment: { horizontal: 'center' }
       }
-      ws['A2'].s = {
+      ws['C2'].s = {
         font: {
-          name: 'Times New Roman',
+          name: 'Calibri',
           sz: 12,
-          bold: true,
-          color: { rgb: "1a75ff" },
+          color: "#000000"
         },
         alignment: { horizontal: 'center' }
       }
-      ws['A3'].s = {
+      ws['C3'].s = {
         font: {
-          name: 'Times New Roman',
+          name: 'Calibri',
           sz: 12,
-          bold: true,
+          color: "#000000"
+        },
+        alignment: { horizontal: 'center' }
+      }
+      ws['D2'].s = {
+        font: {
+          name: 'Calibri',
+          sz: 12,
           color: "#000000"
         },
         alignment: { horizontal: 'center' }
       }
 
-      ws['A12'].s = {
+      ws['D3'].s = {
         font: {
-          name: 'Times New Roman',
+          name: 'Calibri',
           sz: 12,
-          bold: true,
           color: "#000000"
         },
         alignment: { horizontal: 'center' }
       }
+      ws['B4'].s = {
+        font: {
+          name: 'Calibri',
+          sz: 12,
+          color: "#000000"
+        },
+        alignment: { horizontal: 'center' }
+      }
+
+
       var wscols = [];
-      var cols_width = 16; // Default cell width
+      var cols_width = 7; // Default cell width
       wscols.push({
-        wch: 10
+        wch: 1
       });
       wscols.push({
-        wch: 40
+        wch: 1
       });
       wscols.push({
-        wch: 10
+        wch: 7
       });
       wscols.push({
-        wch: 10
+        wch: 30
       });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+      wscols.push({
+        wch: cols_width
+      });
+
       ws["!cols"] = wscols;
       ws["!merges"] = merge;
 
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet' + cnt);
-      if (cnt == data.length - 2)
+      XLSX.utils.book_append_sheet(wb, ws, aSheet[cnt].toString()); //'Sheet' + cnt);
+      if (cnt == data.length - 2) {
+
         XLSX.writeFile(wb, this.fileName);
+      }
+
     }
 
 
@@ -185,10 +298,28 @@ export class Student5PercentReportComponent {
   }
   generateFileName() {
     //9-A-B-C-5% INTERNAL MARKSHEET-2024-25
-    this.header1 = '9-A-B-C-5%'
-    this.header2 = 'INTERNAL MARKSHEET-2024-25';
+    let stryear: string = '';
+    stryear = this.getCurrentFiscalYear();
+    return this.strdivision + '-5%' + '-' + 'INTERNAL MARKSHEET-' + stryear + '.xlsx';
+  }
 
-    return this.header1 + '-' + this.header2 + '.xlsx';
+
+  getCurrentFiscalYear() {
+    //get current date
+    var today = new Date();
+
+    //get current month
+    var curMonth = today.getMonth();
+
+    var fiscalYr = "";
+    if (curMonth > 3) { //
+      var nextYr1 = (today.getFullYear() + 1).toString();
+      fiscalYr = today.getFullYear().toString() + "-" + nextYr1.charAt(2) + nextYr1.charAt(3);
+    } else {
+      var nextYr2 = today.getFullYear().toString();
+      fiscalYr = (today.getFullYear() - 1).toString() + "-" + nextYr2.charAt(2) + nextYr2.charAt(3);
+    }
+    return fiscalYr;
   }
 
 }
