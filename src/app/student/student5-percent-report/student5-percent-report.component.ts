@@ -128,9 +128,9 @@ export class Student5PercentReportComponent {
     for (let cnt = 0; cnt <= data.length - 2; cnt++) {
       this.header0 = 'INTERNAL MARKSHEET-' + this.getCurrentFiscalYear();
       //this.header3 = this.commonService.highestmarkobtainheader;
-      this.header1 = aSheet[0].split("-")[0];
-      this.header2 = aSheet[0].split("-")[2];
-      this.header3 = aSheet[0].split("-")[1];
+      this.header1 = aSheet[cnt].split("-")[0];
+      this.header2 = aSheet[cnt].split("-")[2];
+      this.header3 = aSheet[cnt].split("-")[1];
       this.header11 = 'CLASS';
       this.header22 = 'SUBJECT';
       this.header33 = 'DIV.';
