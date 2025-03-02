@@ -36,10 +36,45 @@ export class Student5PercentReportComponent {
     this.strTestTypeGroupA = utilityForm2.value.testtypeGroupA;
     this.strTestTypeGroupB = utilityForm2.value.testtypeGroupB;
     this.standardId = utilityForm2.value.standardid;
-
-    this.GetRankData();
+    let strError = "";
+    if (utilityForm2.value.standardid == "") {
+      this.setErrorMessage("Select standard");
+      return;
+    }
+    if (utilityForm2.value.testtypeGroupA == "") {
+      this.setErrorMessage("Select Group A");
+      return;
+    }
+    if (utilityForm2.value.testtypeGroupB == "") {
+      this.setErrorMessage("Select Group B");
+      return;
+    }
+    strError = this.validateGroupSelection();
+    if (strError == "")
+      this.GetRankData();
   }
+  validateGroupSelection() {
+    let strgA = this.strTestTypeGroupA.toString();
+    let strgB = this.strTestTypeGroupB.toString();
+    let strError = "";
+    const astrA = strgA.split(",");
+    const astrB = strgB.split(",");
+    for (let cnt = 0; cnt < astrA.length; cnt++) {
+      if (strgB.indexOf(astrA[cnt]) >= 0) {
+        //this.setErrorMessage("Group items should be diffrent in Group A and Group B");
+        strError = "Group items should be diffrent in Group A and Group B";
+        break;
+      }
+    }
+    if (strError != "") {
+      this.setErrorMessage(strError);
+    }
+    else {
+      this.setErrorMessage("");
 
+    }
+    return strError;
+  }
   GetTestTypeList() {
     this.service.getTestTypeList().subscribe(data => {
       this.testtypes = data;
@@ -99,6 +134,7 @@ export class Student5PercentReportComponent {
     this.fileName = this.generateFileName();
 
     const key = Object.keys(data[0][0]); // retive key from first data object
+
     let aheader = [];
     for (let c = 0; c < key.length; c++) {
       if (c <= 1)
@@ -115,13 +151,13 @@ export class Student5PercentReportComponent {
       if (key[c] == "unit5" && aTestGroupB.length >= 1)
         key[c] = aTestGroupB[0];
       if (key[c] == "unit6" && aTestGroupB.length >= 2)
-        key[c] = aTestGroupA[1];
+        key[c] = aTestGroupB[1];
       if (key[c] == "unit7" && aTestGroupB.length >= 3)
-        key[c] = aTestGroupA[2];
+        key[c] = aTestGroupB[2];
       if (key[c] == "unit8" && aTestGroupB.length >= 4)
-        key[c] = aTestGroupA[3];
-
-      key[c] = key[c].toUpperCase().replace("_", " ").replace("5PERCENT", "5%").replace("BEST1", "BEST").replace("CW", "C.W.").replace("HW", "H.W.").replace("NAME", "NAME OF STUDENT");
+        key[c] = aTestGroupB[3];
+      if (key[c] != "" && key[c] != undefined)
+        key[c] = key[c].toUpperCase().replace("_", " ").replace("5PERCENT", "5%").replace("BEST1", "BEST").replace("CW", "C.W.").replace("HW", "H.W.").replace("NAME", "NAME OF STUDENT");
     }
     aheader.push(key);
 
