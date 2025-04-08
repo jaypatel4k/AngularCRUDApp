@@ -123,7 +123,6 @@ export class Student5PercentReportComponent {
 
         strSheet = data[data.length - 1][0].sheetsNames;
         const aSheet = strSheet.split("~");
-        console.log(data[data.length - 1][0].typeNames);
         strTestTypes = data[data.length - 1][0].typeNames;
         const aTestTypes = strTestTypes?.split("~");
         let strTestTypesA = aTestTypes[0].toString();
@@ -208,56 +207,42 @@ export class Student5PercentReportComponent {
           XLSX.utils.sheet_add_json(ws, data[cnt], { origin: 'A5', skipHeader: true });
 
 
-          // ws['A1'].s = {
-          //   font: {
-          //     name: 'Calibri',
-          //     sz: 12,
-          //     color: "#000000"
-          //   },
-          //   alignment: { horizontal: 'center' }
-          // }
-          // ws['C2'].s = {
-          //   font: {
-          //     name: 'Calibri',
-          //     sz: 12,
-          //     color: "#000000"
-          //   },
-          //   alignment: { horizontal: 'center' }
-          // }
-          // ws['C3'].s = {
-          //   font: {
-          //     name: 'Calibri',
-          //     sz: 12,
-          //     color: "#000000"
-          //   },
-          //   alignment: { horizontal: 'center' }
-          // }
-          // ws['D2'].s = {
-          //   font: {
-          //     name: 'Calibri',
-          //     sz: 12,
-          //     color: "#000000"
-          //   },
-          //   alignment: { horizontal: 'center' }
-          // }
-
-          // ws['D3'].s = {
-          //   font: {
-          //     name: 'Calibri',
-          //     sz: 12,
-          //     color: "#000000"
-          //   },
-          //   alignment: { horizontal: 'center' }
-          // }
-          // ws['B4'].s = {
-          //   font: {
-          //     name: 'Calibri',
-          //     sz: 12,
-          //     color: "#000000"
-          //   },
-          //   alignment: { horizontal: 'center' }
-          // }
-
+          ws['A1'].s = {
+            font: {
+              name: 'Calibri',
+              sz: 10,
+              color: "#000000",
+              bold: true
+            },
+            alignment: { horizontal: 'center' }
+          }
+          ws['C2'].s = {
+            font: {
+              name: 'Calibri',
+              sz: 10,
+              color: "#000000",
+              bold: true
+            },
+            alignment: { horizontal: 'center' }
+          }
+          ws['C3'].s = {
+            font: {
+              name: 'Calibri',
+              sz: 10,
+              color: "#000000",
+              bold: true
+            },
+            alignment: { horizontal: 'center' }
+          }
+          ws['D2'].s = {
+            font: {
+              name: 'Calibri',
+              sz: 10,
+              color: "#000000",
+              bold: true
+            },
+            alignment: { horizontal: 'center' }
+          }
 
           var wscols = [];
           var cols_width = 7; // Default cell width
@@ -319,24 +304,18 @@ export class Student5PercentReportComponent {
           if (cnt <= data.length - 2)
             XLSX.utils.book_append_sheet(wb, ws, aSheet[cnt].toString()); //'Sheet' + cnt);
 
-          // if (cnt == data.length - 2) {
-          //   // XLSX.writeFile(wb, this.fileName);
-          //   writeExcelFile(wb, this.fileName);
-          // }
         }
       } // END OF First Obj IF
       if (objCnt == 1) {
         const data1 = objData[0][1];
-
-        console.log(data1);
-        //return
         const aSubjects = data1[data1.length - 2].strAllSubject.split("~");
         const aFinalSheetName = data1[data1.length - 1].strFinalSheetname.split("~");
+        let Heading0 = [[this.header0]];
 
         const key = Object.keys(data1[0][0]); // retive key from first data object
 
         let aheader = [];
-        for (let c = 0; c <= key.length; c++) {
+        for (let c = 0; c < key.length; c++) {
 
           if (key[c] == "rollNo")
             key[c] = "Roll No";
@@ -365,75 +344,77 @@ export class Student5PercentReportComponent {
 
         }
         aheader.push(key);
-
-
         for (let cnt = 0; cnt < data1.length - 2; cnt++) {
           this.header0 = 'INTERNAL MARKSHEET-' + this.getCurrentFiscalYear();
+          const asheetname = aFinalSheetName[cnt].split("-");
+          this.header11 = 'STD:-' + asheetname[0] + "-" + asheetname[1].replace("FINAL", "");
 
-
+          let Heading11 = [[this.header11]];
           /* pass here the table id */
           const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
           /* generate workbook and add the worksheet */
+          XLSX.utils.sheet_add_aoa(ws, Heading0, { origin: 'B1' });
+          XLSX.utils.sheet_add_aoa(ws, Heading11, { origin: 'B2' });
           XLSX.utils.sheet_add_aoa(ws, aheader, { origin: 'A4' });
 
           XLSX.utils.sheet_add_json(ws, data1[cnt], { origin: 'A5', skipHeader: true });
-
+          ws['B1'].s = {
+            font: {
+              name: 'Calibri',
+              sz: 10,
+              color: "#000000",
+              bold: true
+            },
+            alignment: { horizontal: 'center' }
+          }
+          ws['B2'].s = {
+            font: {
+              name: 'Calibri',
+              sz: 10,
+              color: "#000000",
+              bold: true
+            },
+            alignment: { horizontal: 'center' }
+          }
           var wscols = [];
-          var cols_width = 10; // Default cell width
-          wscols.push({
-            wch: 7
-          });
-          wscols.push({
-            wch: 30
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
-          wscols.push({
-            wch: cols_width
-          });
+          var cols_width = 7; // Default cell width
+          var isHidden: boolean = false;
+
+          for (let c = 0; c < key.length; c++) {
+            if (c <= aSubjects.length + 1) {
+              isHidden = false;
+            }
+            else {
+              isHidden = true;
+            }
+            if (c == 0) {
+              wscols.push({
+                wch: 7,
+                hidden: isHidden
+              });
+            }
+            if (c == 1) {
+              wscols.push({
+                wch: 30,
+                hidden: isHidden
+              });
+            }
+            if (c > 1) {
+              wscols.push({
+                wch: 8,
+                hidden: isHidden
+              });
+            }
+          }
 
           ws["!cols"] = wscols;
 
-          XLSX.utils.book_append_sheet(wb, ws, aFinalSheetName[cnt] + "-" + this.getCurrentFiscalYear()); //'Sheet' + cnt);
-
-          // if (cnt == data.length - 2) {
-          //   // XLSX.writeFile(wb, this.fileName);
-          //   writeExcelFile(wb, this.fileName);
-          // }
+          XLSX.utils.book_append_sheet(wb, ws, aFinalSheetName[cnt] + this.getCurrentFiscalYear()); //'Sheet' + cnt);
         }
       }//END OF second OBJ if
       if (objCnt == 1)
         XLSX.writeFile(wb, this.fileName);
     }
-
-
-    //XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    /* save to file */
 
   }
   generateFileName() {

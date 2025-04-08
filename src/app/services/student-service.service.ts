@@ -8,40 +8,28 @@ import { environment } from '../../environments/environment';
 })
 export class StudentServiceService {
 
-  // readonly apiUrl = 'https://localhost:7053/api/';
-  // readonly photoUrl = "https://localhost:7053/Photos/";
   readonly apiUrl = environment.API_URL;
   readonly photoUrl = environment.API_URL + '/Photos/';
 
   constructor(private http: HttpClient) { }
 
 
-  //UploadStudent(formdata: FormData, params: HttpParams): Observable<any> {
   UploadStudent(formdata: FormData): Observable<any> {
     let headers = new HttpHeaders();
-
-    // headers.append('Content-Type', 'multipart/form-data');
-
-    // headers.append('Accept', 'application/json');
-
     const httpOptions = { headers: headers };
 
-    // return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata, { params })
     return this.http.post(this.apiUrl + 'studentreport/UploadStudent', formdata);
 
   }
-  // UploadStudentMarks(formdata: FormData, params: HttpParams): Observable<any> {
   UploadStudentMarks(formdata: FormData): Observable<any> {
     let headers = new HttpHeaders();
 
     const httpOptions = { headers: headers };
 
-    //return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata, { params })
     return this.http.post(this.apiUrl + 'studentreport/UploadStudentMarks', formdata)
 
   }
   AddSubjectOrDivOrTesttype(formdata: FormData): Observable<any> {
-    // console.log(formdata.get("fieldtype"));
     const body = { fieldtype: formdata.get("fieldtype"), fieldvalue: formdata.get("fieldvalue") };
     return this.http.post(this.apiUrl + 'studentreport/' + formdata.get("fieldtype"), body);
   }
